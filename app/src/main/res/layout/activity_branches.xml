@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/branches_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".BranchesActivity">
+
+    <!-- Заголовок -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Филиалы в городе:"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorPrimary"
+        android:paddingBottom="16dp" />
+
+    <!-- Первый филиал -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:cardCornerRadius="20dp">
+
+
+    <TextView
+        android:id="@+id/komsomolets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:padding="16dp"
+        android:fontFamily="@font/firasans"
+        android:text="Проспект Республики, 30Б, остановка Комсомолец"
+        android:textSize="16sp"
+        android:lineSpacingExtra="4dp"
+        android:elevation="2dp" />
+    </androidx.cardview.widget.CardView>
+    <!-- Второй филиал -->
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="20dp">
+    <TextView
+        android:id="@+id/universal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/firasans"
+        android:padding="16dp"
+        android:text="9 мкр, 3в/г\nмаг. Универсал"
+        android:textSize="16sp"
+        android:lineSpacingExtra="4dp"
+
+        android:elevation="2dp" />
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
