@@ -18,27 +18,54 @@ import com.google.android.material.R as MaterialR
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.activity.result.contract.ActivityResultContracts
 import android.net.Uri
+import android.os.Environment
 import android.widget.Toast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PhotoPrintFragment() : BottomSheetDialogFragment() {
     private lateinit var selectPhotosButton: Button
     private lateinit var addButton: Button
     private lateinit var removeButton: Button
     private lateinit var quantityTextView: TextView
+    private var currentZipPath: String? = null
 
-    // Регистрация для выбора изображений
+    // Фабричная функция для выбора фотографий
     private val pickImageLauncher = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        if (uri != null) {
+        ActivityResultContracts.GetMultipleContents()
+    ) { uris: List<Uri>? ->
+        if (uris?.isNotEmpty() == true) {
             // Фото выбрано, uri — это адрес фото в памяти телефона
-            Toast.makeText(requireContext(), "Фото выбрано: $uri", Toast.LENGTH_LONG).show()
+            createZipArchive(uris)
         } else {
             Toast.makeText(requireContext(), "Выбор отменен", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun createZipArchive(uris: List<Uri>) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val zipPath = ZipHelper.createZip(
+                contentResolver = requireContext().contentResolver,
+                imageUris = uris,
+                cacheDir = downloadsDir
+            )
+            withContext(Dispatchers.Main) {
+
+                // 5. Проверяем, успешно ли создался архив
+                if (zipPath != null) {
+                    // Архив создан успешно
+                    currentZipPath = zipPath                    // Сохраняем путь в переменную
+
+                }
+            }
+        }
+    }
+
 
     private lateinit var cartViewModel: CartViewModel // для случая синхронизации с корзиной (см. manifest и был создан класс MyApp)
   //  private val cartViewModel: CartViewModel by activityViewModels() //в случае если просто чтобы при выходе из фрагмента данные сохранялись
@@ -60,6 +87,7 @@ class PhotoPrintFragment() : BottomSheetDialogFragment() {
             return fragment
         }
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         val view = inflater.inflate(R.layout.fragment_photo_print, container, false)
