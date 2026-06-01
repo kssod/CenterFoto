@@ -10,8 +10,8 @@
     <!-- Название товара -->
     <TextView
         android:id="@+id/basketProductName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
 
         android:text="Название товара"
         android:textSize="16sp"/>

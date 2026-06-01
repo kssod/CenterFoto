@@ -38,8 +38,16 @@ class CartViewModel : ViewModel() {
     }
 
     // Удаление товара из корзины
-    fun removeFromBasket() {
-        // Ожидает реализации
+    fun removeFromBasket(product: Product) {
+        val currentList = cartItems.value?.toMutableList() ?: return
+        val existingProduct: Product? = currentList.find {it.id == product.id}
+
+        if (existingProduct!=null) {
+            if (existingProduct.quantityInBasket > 1)
+                existingProduct.quantityInBasket--
+            else currentList.remove(existingProduct)
+        }
+        cartItems.value=currentList
     }
 
 }

@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,32 +24,23 @@ class BasketActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.basket_activity)
         cartViewModel = (application as MyApp).cartViewModel
+
         cartRecyclerView = findViewById(R.id.basketRecyclerView)
         totalPriceTextView = findViewById(R.id.totalPriceTextView)
 
         setupRecyclerView()
         setupObservers()
 
-        findViewById<Button>(R.id.checkoutButton).setOnClickListener {
-            // Пока просто покажем сообщение
-            android.widget.Toast.makeText(this, "Заказ оформлен!", Toast.LENGTH_SHORT).show()
 
-        }
     }
 
     private fun setupRecyclerView() {
         adapter = BasketAdapter() { product, change ->
-            if (change == 0) {
-                // Удаляем товар
-                // cartViewModel.removeFromCart(product.id)
-            } else if (change > 0) {
-                // Увеличиваем количество
-                for (i in 1..change) {
-                    cartViewModel.addToBasket(product)
-                }
-            }
-
+            when (change) {
+                1 -> cartViewModel.addToBasket(product)
+                -1 -> cartViewModel.removeFromBasket(product)}
         }
+
 
         cartRecyclerView.layoutManager = LinearLayoutManager(this)
         cartRecyclerView.adapter = adapter

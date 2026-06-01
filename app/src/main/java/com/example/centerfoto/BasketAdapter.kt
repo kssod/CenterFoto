@@ -43,16 +43,12 @@ class BasketAdapter(
             quantityTextView.text = product.quantityInBasket.toString()  // ← quantityInBasket
             productPrice.text = "${product.price * product.quantityInBasket} руб."
 
-            decreaseButton.setOnClickListener {
-                if (product.quantityInBasket > 1) {
-                    onQuantityChange(product, -1)
-                } else {
-                    onQuantityChange(product, 0)
-                }
-            }
-
             increaseButton.setOnClickListener {
                 onQuantityChange(product, 1)
+            }
+
+            decreaseButton.setOnClickListener {
+                onQuantityChange(product, -1)
             }
         }
     }
