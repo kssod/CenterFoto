@@ -23,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,19 +49,46 @@ class PhotoPrintFragment() : BottomSheetDialogFragment() {
 
     private fun createZipArchive(uris: List<Uri>) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-            val zipPath = ZipHelper.createZip(
-                contentResolver = requireContext().contentResolver,
-                imageUris = uris,
-                cacheDir = downloadsDir
-            )
-            withContext(Dispatchers.Main) {
+            try {
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                val zipPath = ZipHelper.createZip(
+                    contentResolver = requireContext().contentResolver,
+                    imageUris = uris,
+                    cacheDir = downloadsDir
+                )
 
-                // 5. Проверяем, успешно ли создался архив
-                if (zipPath != null) {
-                    // Архив создан успешно
-                    currentZipPath = zipPath                    // Сохраняем путь в переменную
+                withContext(Dispatchers.Main) {
+                    if (zipPath != null) {
+                        // ✅ 1. Сохраняем путь к архиву
+                        currentZipPath = zipPath
 
+                        // ✅ 2. Обновляем товар: количество = количество фото
+                        currentProduct?.let { product ->
+                            val updatedProduct = product.copy(
+                                quantityInBasket = uris.size,  // ← количество = число фото
+                                zipFilePath = zipPath           // ← сохраняем путь к архиву
+                            )
+
+                            // ✅ 3. Добавляем в корзину
+                            cartViewModel.addToBasket(updatedProduct)
+
+                            // ✅ 4. Показываем уведомление
+                            Toast.makeText(
+                                requireContext(),
+                                "Добавлено ${uris.size} фото в корзину",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            // ✅ 5. Закрываем фрагмент
+                            dismiss()
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "Ошибка создания архива", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -76,13 +104,15 @@ class PhotoPrintFragment() : BottomSheetDialogFragment() {
         private const val ARG_TITLE = "title"
         private const val ARG_DESCRIPTION = "description"
         private const val ARG_PRODUCT_ID = "id"
+        private const val ARG_IMAGE = "image"
 
-        fun newInstance(productId: Int, title: String, description: String): PhotoPrintFragment {
+        fun newInstance(productId: Int, title: String, description: String, image:Int): PhotoPrintFragment {
             val fragment: PhotoPrintFragment = PhotoPrintFragment()
             val args = Bundle()
             args.putInt(ARG_PRODUCT_ID, productId)
             args.putString(ARG_TITLE, title)
             args.putString(ARG_DESCRIPTION, description)
+            args.putInt(ARG_IMAGE, image)
             fragment.arguments = args
             return fragment
         }
@@ -96,6 +126,7 @@ class PhotoPrintFragment() : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
        // убрать если хочу чтобы было здесь by activityViewModel а в корзине by viewModels
         cartViewModel = (requireContext().applicationContext as MyApp).cartViewModel
         selectPhotosButton = view.findViewById(R.id.selectPhotosButton)
@@ -107,6 +138,7 @@ class PhotoPrintFragment() : BottomSheetDialogFragment() {
         val productId = arguments?.getInt(ARG_PRODUCT_ID) ?: 0
         val title = arguments?.getString(ARG_TITLE) ?: ""
         val description = arguments?.getString(ARG_DESCRIPTION) ?: ""
+        val image = arguments?.getInt(ARG_IMAGE) ?: 0
 
         // Создаем объект товара
         // (цену пока ставим 0)
@@ -114,8 +146,11 @@ class PhotoPrintFragment() : BottomSheetDialogFragment() {
             id = productId,
             name = title,
             price = 0,
-            quantityInBasket = 0
+            quantityInBasket = 0,
+            imageRes = image,
+            zipFilePath = currentZipPath
         )
+
 
         view.findViewById<TextView>(androidx.core.R.id.text).text = title
         view.findViewById<TextView>(androidx.core.R.id.text2).text = description
@@ -130,7 +165,7 @@ class PhotoPrintFragment() : BottomSheetDialogFragment() {
 
     // 👇 НОВЫЙ МЕТОД: Выносим логику кнопок в отдельную функцию
     private fun setupButtons() {
-        // Добавить товар кнопка - ПОЛНОСТЬЮ ЗАМЕНЯЕМ
+        // Добавить товар кнопка
         addButton.setOnClickListener {
             currentProduct?.let { product ->
                 cartViewModel.addToBasket(product)  // Просто говорим ViewModel добавить

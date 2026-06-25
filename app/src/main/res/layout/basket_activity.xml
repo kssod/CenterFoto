@@ -11,9 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:text="Моя коризна"
-        android:textSize="24sp"
+        android:gravity="start"
+        android:fontFamily="@font/firasans"
+        android:text="Корзина"
+        android:textSize="35sp"
         android:textStyle="bold" />
 
     <!-- Список товаров -->
@@ -39,7 +40,7 @@
         android:id="@+id/checkoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+android:fontFamily="@font/firasans"
         android:text="Оформить заказ" />
 
 </LinearLayout>

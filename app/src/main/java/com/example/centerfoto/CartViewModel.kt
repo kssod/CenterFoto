@@ -28,7 +28,7 @@ class CartViewModel : ViewModel() {
             existingProduct.quantityInBasket++
         } else {
             // Если товара нет - добавляем новый с quantity = 1
-            val newProduct = product.copy(quantityInBasket = 1)
+            val newProduct = product.copy(quantityInBasket = product.quantityInBasket)
             currentList.add(newProduct)
         }
 

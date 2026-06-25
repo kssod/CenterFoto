@@ -3,14 +3,16 @@ package com.example.centerfoto
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
- class MainActivity : BaseActivity() {
+ class MainActivity : AppCompatActivity() {
     private lateinit var logoImageView: ImageView
     private lateinit var recyclerView: RecyclerView
-    private lateinit var basketButton: Button
+    private lateinit var basketButton: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,21 +32,38 @@ import androidx.recyclerview.widget.RecyclerView
         recyclerView.layoutManager = layoutManager
 
         val services = listOf(
-            CardItem(R.drawable.photoprintcard, 1,"Печать фотографий", "Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.dtf, 2,"DTF печать на одежде","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.cup,3,"Печать на кружках","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.plotter,4, "Широкоформатная печать","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.photoprintcard, 5,"Печать на кружках","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.dtf,6, "Печать на кружках","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.cup,7, "Печать на кружках","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.plotter, 8,"Печать на кружках","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.photoprintcard,9, "Печать на кружках","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.dtf, 10,"Печать на кружках","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.cup,11, "Печать на кружках","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань"),
-            CardItem(R.drawable.plotter,12, "Печать на кружках","Печать на футболках — это процесс нанесения изображений, логотипов, надписей или фотографий на ткань")
-        )
-        val adapter: ServiceAdapter = ServiceAdapter(services) { item -> val fragment = PhotoPrintFragment.newInstance(productId = item.productId, title = item.title, description = item.description); fragment.show(supportFragmentManager, "ServiceDetail") }
-        recyclerView.adapter = adapter
+            CardItem(R.drawable.xerox,1, "Печать документов","Черно-белая и цветная печать документов"),
+            CardItem(R.drawable.photoprintcard, 2, "Печать фотографий", "Струйная печать фотографий форматов от А7 до А0"),
+            CardItem(R.drawable.scan,3, "Сканирование","Сканирование документов различных форматов, в том числе нестандартных: от А5 до А0+"),
 
+            CardItem(R.drawable.plotter,4, "Печать на плоттере","Печать на инженерной бумаге или ватмане форматов от А4 до А0+"),
+            CardItem(R.drawable.doc,5, "Фотографии на документы","Любых размеров по официальным требованиям"),
+
+            CardItem(R.drawable.bcards, 6,"Визитки","Струйные, лазерные, евровизитки, текстурные"),
+            CardItem(R.drawable.cup,7,"Печать на кружках","Белые, цветные, кружки-хамелеон, пивные"),
+            CardItem(R.drawable.dtf, 8,"DTF печать на одежде","Нанесение изображений, логотипов, надписей на ткань"),
+            CardItem(R.drawable.pillow, 11,"Фотосувениры","Магнитная бумага, подушки, брелоки - порадуйте близких подарком"),
+            CardItem(R.drawable.holst,9, "Холсты","Печать на холсте экосольвентыми чернилами с деревянным подрамником"),
+            CardItem(R.drawable.cut, 10,"Плоттерная резка","Резка наклеек, табличек, накатка на ПВХ"),
+            CardItem(R.drawable.acsessories,12, "Аксессуары","Компьютерные мыши, наушники, пауэрбэнки, адаптеры, батарейки")
+
+            
+        )
+        val adapter = ServiceAdapter(services) {item ->
+            when (item.productId) {
+                1,2 -> {
+                    val fragment = OptionsListFragment.newInstance(
+                        item.productId, item.imageRes)
+                    fragment.show(supportFragmentManager, "OptionsList")
+                }
+                else -> {
+                    val fragment = PhotoPrintFragment.newInstance(
+                        item.productId, item.title, item.description, item.imageRes
+                    )
+                    fragment.show(supportFragmentManager, "ServiceDetail")
+                }
+            }
+        }
+        recyclerView.adapter = adapter
     }
 }

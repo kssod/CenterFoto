@@ -2,13 +2,14 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="20dp"
     app:cardElevation="4dp"
     android:layout_marginStart="2dp"
     android:layout_marginTop="2dp"
     android:layout_marginEnd="2dp"
     android:layout_marginBottom="2dp"
+
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,30 +18,68 @@
 
         <ImageView
             android:id="@+id/cardImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+android:padding="5dp"
+
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/photoprintcard"
-            app:layout_constraintBottom_toTopOf="@id/cardTitle"
-            app:layout_constraintDimensionRatio="H,16:9"
+            app:layout_constraintBottom_toTopOf="@id/linearText"
+
+
+           
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/cardTitle"
+        <LinearLayout
+            android:id="@+id/linearText"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#80FFFFFF"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="Название услуги"
-            android:textColor="#000000"
-            android:fontFamily="@font/firasans"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:layout_height="120dp"
 
+
+            android:background="#E2979797"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardImage">
+
+            <TextView
+                android:id="@+id/cardTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+android:layout_marginTop="5dp"
+                android:includeFontPadding="false"
+                android:fontFamily="@font/firasansbold"
+                android:gravity="start"
+                android:lineSpacingMultiplier="0.8"
+                android:text="Название услуги"
+                android:textColor="#FFFFFF"
+                android:textSize="23sp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/cardDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+
+                android:fontFamily="@font/firasans"
+                android:gravity="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:autoSizeTextType="uniform"
+                android:text="Название услуги"
+                android:textColor="#D8E1DFDF"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+</androidx.cardview.widget.CardView>
