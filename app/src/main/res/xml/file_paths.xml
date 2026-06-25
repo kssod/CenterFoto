@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Корень внешнего хранилища (Downloads, Documents и т.д.) -->
+    <external-path
+        name="external"
+        path="." />
+
+    <!-- Внешняя папка приложения (Android/data/...) -->
+    <external-files-path
+        name="external_files"
+        path="." />
+
+    <!-- Внутренняя папка приложения (cache) -->
+    <cache-path
+        name="cache"
+        path="." />
+
+    <!-- Внешний кэш приложения -->
+    <external-cache-path
+        name="external_cache"
+        path="." />
+
+    <!-- Внутренняя папка files -->
+    <files-path
+        name="files"
+        path="." />
+
+    <!-- Внешние медиафайлы (например, Pictures) -->
+    <external-media-path
+        name="external_media"
+        path="." />
+</paths>
