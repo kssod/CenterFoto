@@ -8,10 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ServiceAdapter(
-    private val items: List<CardItem>,
+    private var items: MutableList<CardItem>,
     private val onItemClick: (CardItem) -> Unit
 ) : RecyclerView.Adapter<ServiceAdapter.ViewHolder>() {
-
+    fun updateList(newItems: MutableList<CardItem>) {
+        items = newItems
+        notifyDataSetChanged()
+    }
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.cardImage)
         val title: TextView = itemView.findViewById(R.id.cardTitle)

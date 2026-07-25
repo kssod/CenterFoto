@@ -43,6 +43,9 @@ class OptionsListFragment: BottomSheetDialogFragment() {
             return fragment
         }
     }
+    private lateinit var cartViewModel: CartViewModel
+    private var currentProduct: Product? = null
+    private var currentZipPath: String? = null
 
     private val pickDocsLauncher = registerForActivityResult(
         ActivityResultContracts.OpenMultipleDocuments()
@@ -52,47 +55,47 @@ class OptionsListFragment: BottomSheetDialogFragment() {
         else
             Toast.makeText(requireContext(), "Выбор отменён", Toast.LENGTH_SHORT).show()
     }
-    private lateinit var cartViewModel: CartViewModel
-    private var currentProduct: Product? = null
-    private var currentZipPath: String? = null
+
     private fun createZipArchive(uris: List<Uri>) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                val categoryName = currentProduct?.name ?: "Файлы"
+                val downloadsDir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 val zipPath = ZipHelper.createZip(
                     contentResolver = requireContext().contentResolver,
                     imageUris = uris,
-                    cacheDir = downloadsDir
+                    cacheDir = downloadsDir,
+                    categoryName = categoryName
                 )
-
                 withContext(Dispatchers.Main) {
-                    if (zipPath != null) {
-                        // ✅ 1. Сохраняем путь к архиву
-                        currentZipPath = zipPath
+                if (zipPath != null) {
+                    // ✅ 1. Сохраняем путь к архиву
+                    currentZipPath = zipPath
 
-                        // ✅ 2. Обновляем товар: количество = количество фото
-                        currentProduct?.let { product:Product ->
-                            val updatedProduct = product.copy(
-                                quantityInBasket = uris.size,  // ← количество = число фото
-                                zipFilePath = zipPath           // ← сохраняем путь к архиву
-                            )
+                    // ✅ 2. Обновляем товар: количество = количество фото
+                    currentProduct?.let { product: Product ->
+                        val updatedProduct = product.copy(
+                            quantityInBasket = uris.size,  // ← количество = число фото
+                            zipFilePath = zipPath           // ← сохраняем путь к архиву
+                        )
 
-                            // ✅ 3. Добавляем в корзину
-                            cartViewModel.addToBasket(updatedProduct)
+                        // ✅ 3. Добавляем в корзину
+                        cartViewModel.addToBasket(updatedProduct)
+                        // ✅ 4. Показываем уведомление
+                        Toast.makeText(
+                            requireContext(),
+                            "Добавлено ${uris.size} фото в корзину",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                            // ✅ 4. Показываем уведомление
-                            Toast.makeText(
-                                requireContext(),
-                                "Добавлено ${uris.size} фото в корзину",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        // ✅ 5. Закрываем фрагмент
 
-                            // ✅ 5. Закрываем фрагмент
-
-                        }
-                    } else {
-                        Toast.makeText(requireContext(), "Ошибка создания архива", Toast.LENGTH_SHORT).show()
                     }
+                } else {
+                    Toast.makeText(requireContext(), "Ошибка создания архива", Toast.LENGTH_SHORT)
+                        .show()
+                }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -172,21 +175,25 @@ private fun getOptionsForService(serviceId: Int, imageRes: Int): List<Product> {
     return when (serviceId) {
         // Ксерокопия (id = 1)
         1 -> listOf(
-            Product(101, imageRes, "Печать чёрно-белая А4 односторонняя", 40),
-            Product(102, imageRes,"Печать чёрно-белая А4 двухсторонняя", 70),
-            Product(103, imageRes,"Печать чёрно-белая А3 односторонняя",  90),
-            Product(104, imageRes,"Печать чёрно-белая А3 двухсторонняя",  150),
-            Product(105, imageRes,"Печать цветная А4 односторонняя", 140),
-            Product(106, imageRes,"Печать цветная А4 двухсторонняя", 260),
-            Product(107, imageRes,"Печать цветная А3 односторонняя",  360),
-            Product(108, imageRes,"Печать цветная А3 двухсторонняя",  550)
+            Product(101, imageRes, "Чёрно-белая А4 односторонняя", 40),
+            Product(102, imageRes,"Чёрно-белая А4 двухсторонняя", 70),
+            Product(103, imageRes,"Чёрно-белая А3 односторонняя",  90),
+            Product(104, imageRes,"Чёрно-белая А3 двухсторонняя",  150),
+            Product(105, imageRes,"Цветная А4 односторонняя", 140),
+            Product(106, imageRes,"Цветная А4 двухсторонняя", 260),
+            Product(107, imageRes,"Цветная А3 односторонняя",  360),
+            Product(108, imageRes,"Цветная А3 двухсторонняя",  550)
         )
         2 -> listOf(
             Product(101, imageRes, "10х15 (А6) глянцевая бумага", 85),
             Product(102, imageRes,"10х15 (А6) сатиновая бумага", 140),
-            Product(103, imageRes,"15х20 (А5) глянцевая бумага",  300),
-            Product(104, imageRes,"20х30 (А4) глянцевая бумага",  420),
-            Product(105, imageRes,"30х40 (А3) глянцевая бумага", 720),
+            Product(103, imageRes,"15х21 (А5) глянцевая бумага",  300),
+            Product(104, imageRes,"21х30 (А4) глянцевая бумага",  420),
+            Product(105, imageRes,"30х42 (А3) глянцевая бумага", 720),
+            Product(105, imageRes,"42х60 (А2) глянцевая бумага", 720),
+            Product(105, imageRes,"60х85 (А1) глянцевая бумага", 720),
+            Product(105, imageRes,"85х118 (А0) глянцевая бумага", 720),
+
 
         )
         // Сканирование (id = 6)

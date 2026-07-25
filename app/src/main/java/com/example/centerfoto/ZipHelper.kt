@@ -11,7 +11,8 @@ object ZipHelper {
     fun createZip(
         contentResolver: ContentResolver,
         imageUris: List<Uri>,
-        cacheDir: File
+        cacheDir: File,
+        categoryName: String = ""
     ): String? {
         if (imageUris.isEmpty()) return null
 
@@ -31,9 +32,19 @@ object ZipHelper {
                 // ✅ 1. ПОЛУЧАЕМ ОРИГИНАЛЬНОЕ ИМЯ ФАЙЛА
                 val originalFileName = getOriginalFileName(contentResolver, uri)
                     ?: "file_${System.currentTimeMillis()}"  // если имя не найдено — даём своё
-
+                val finalFileName = if (categoryName.isNotEmpty()) {
+                    val nameWithoutExtension = originalFileName.substringBeforeLast(".")
+                    val extension = originalFileName.substringAfterLast(".", "")
+                    if (extension.isNotEmpty()) {
+                        "${categoryName}_$nameWithoutExtension.$extension"
+                    } else {
+                        "${categoryName}_$originalFileName"
+                    }
+                } else {
+                    originalFileName
+                }
                 // ✅ 2. СОХРАНЯЕМ С ОРИГИНАЛЬНЫМ ИМЕНЕМ (расширение сохраняется!)
-                val destFile = File(tempDir, originalFileName)
+                val destFile = File(tempDir, finalFileName)
 
                 inputStream.use { input ->
                     FileOutputStream(destFile).use { output ->
