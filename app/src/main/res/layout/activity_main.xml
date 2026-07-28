@@ -85,8 +85,6 @@
         android:background="@drawable/circular_button_background"
         app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/cart"
-
-        android:contentDescription="Корзина"
         app:layout_constraintEnd_toEndOf="parent"
         android:scaleType="centerInside"/>
 

@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class BasketAdapter(
-    private val onQuantityChange: (product: Product, change: Int) -> Unit
+    private val onQuantityChange: (productOption: ProductOption, change: Int) -> Unit
 ) : RecyclerView.Adapter<BasketAdapter.BasketViewHolder>() {
 
-    private var products = listOf<Product>()
+    private var productOptions = listOf<ProductOption>()
 
     class BasketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val productName: TextView = itemView.findViewById(R.id.basketProductName)
@@ -23,26 +23,26 @@ class BasketAdapter(
         private val image: ImageView = itemView.findViewById(R.id.image)
         private val zipCheck: TextView = itemView.findViewById(R.id.zipCheck)
 
-        fun forBind(product: Product, onQuantityChange: (product: Product, change: Int) -> Unit) {
-            productName.text = product.name
-            quantityTextView.text = product.quantityInBasket.toString()
-            image.setImageResource(product.imageRes)
-            if (!product.zipFilePath.isNullOrEmpty()) {
+        fun forBind(productOption: ProductOption, onQuantityChange: (productOption: ProductOption, change: Int) -> Unit) {
+            productName.text = productOption.name
+            quantityTextView.text = productOption.quantityInBasket.toString()
+            image.setImageResource(productOption.imageRes)
+            if (!productOption.zipFilePath.isNullOrEmpty()) {
                 zipCheck.text = "📎 Файл прикреплен"
                 zipCheck.visibility = View.VISIBLE
             } else {
                 zipCheck.visibility = View.GONE
             }
             increaseButton.setOnClickListener {
-                onQuantityChange(product, 1)
+                onQuantityChange(productOption, 1)
             }
             decreaseButton.setOnClickListener {
-                onQuantityChange(product, -1)
+                onQuantityChange(productOption, -1)
             }
         }
     }
-    fun updateProducts(newProducts: List<Product>) {
-        products = newProducts
+    fun updateProducts(newProductOptions: List<ProductOption>) {
+        productOptions = newProductOptions
         notifyDataSetChanged()
     }
 
@@ -53,10 +53,10 @@ class BasketAdapter(
     }
 
     override fun onBindViewHolder(holder: BasketViewHolder, position: Int) {
-        holder.forBind(products[position], onQuantityChange)
+        holder.forBind(productOptions[position], onQuantityChange)
     }
 
-    override fun getItemCount() = products.size
+    override fun getItemCount() = productOptions.size
 
 
 }

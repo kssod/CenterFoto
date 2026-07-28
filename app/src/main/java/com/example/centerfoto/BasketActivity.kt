@@ -1,5 +1,6 @@
 package com.example.centerfoto
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -10,9 +11,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class BasketActivity : AppCompatActivity() {
@@ -41,16 +46,46 @@ class BasketActivity : AppCompatActivity() {
                 Toast.makeText(this, "Корзина пуста", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            // 3. Проверяем, есть ли у товаров прикрепленные файлы
-            val hasFiles = cartList.any { !it.zipFilePath.isNullOrEmpty() }
 
-            // 4. Если файлы есть → отправляем в WhatsApp
-            if (hasFiles) {
-                val firstFilePath = cartList.first { !it.zipFilePath.isNullOrEmpty() }.zipFilePath
-                firstFilePath?.let { filePath ->
-                    sendToWhatsApp(filePath)
+            val allFileInfos = cartList.flatMap { it.tempFileInfos ?: emptyList() }
+
+            if (allFileInfos.isEmpty()) {
+                Toast.makeText(this, "Нет файлов для отправки", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val progressDialog = ProgressDialog(this).apply {
+                setMessage("Создание архива...")
+                setCancelable(false)
+                show()
+            }
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+
+                    val zipPath = ZipHelper.createZip(
+                        contentResolver = contentResolver,
+                        files = allFileInfos,
+                        cacheDir = cacheDir
+                    )
+                    withContext(Dispatchers.Main) {
+                        progressDialog.dismiss() // Скрываем загрузку
+
+                        if (zipPath != null) {
+                            // 4. Архив готов → Отправляем в WhatsApp
+                            sendToWhatsApp(zipPath)
+                        } else {
+                            Toast.makeText(this@BasketActivity, "Ошибка создания архива", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        progressDialog.dismiss()
+                        Toast.makeText(this@BasketActivity, "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
+
 
         }
     }

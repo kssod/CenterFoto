@@ -2,6 +2,7 @@ package com.example.centerfoto
 
 import android.content.ContentResolver
 import android.net.Uri
+import android.os.Environment
 import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -10,39 +11,31 @@ object ZipHelper {
 
     fun createZip(
         contentResolver: ContentResolver,
-        imageUris: List<Uri>,
+        files: List<FileInfo>,
         cacheDir: File,
-        categoryName: String = ""
+
     ): String? {
-        if (imageUris.isEmpty()) return null
+        if (files.isEmpty()) return null
 
         return try {
-            val tempDir = File(cacheDir, "temp_files_${System.currentTimeMillis()}")
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val tempDir = File(downloadsDir, "temp_files_${System.currentTimeMillis()}")
             tempDir.mkdirs()
 
             val filesToZip = mutableListOf<File>()
 
-            for (uri in imageUris) {
-                val inputStream = contentResolver.openInputStream(uri)
+            for (fileInfo in files) {
+                val inputStream = contentResolver.openInputStream(fileInfo.uri)
                 if (inputStream == null) {
-                    println("Не удалось открыть поток для $uri")
+                    println("Не удалось открыть поток для $fileInfo")
                     continue
                 }
 
-                // ✅ 1. ПОЛУЧАЕМ ОРИГИНАЛЬНОЕ ИМЯ ФАЙЛА
-                val originalFileName = getOriginalFileName(contentResolver, uri)
-                    ?: "file_${System.currentTimeMillis()}"  // если имя не найдено — даём своё
-                val finalFileName = if (categoryName.isNotEmpty()) {
-                    val nameWithoutExtension = originalFileName.substringBeforeLast(".")
-                    val extension = originalFileName.substringAfterLast(".", "")
-                    if (extension.isNotEmpty()) {
-                        "${categoryName}_$nameWithoutExtension.$extension"
-                    } else {
-                        "${categoryName}_$originalFileName"
-                    }
-                } else {
-                    originalFileName
-                }
+                val originalFileName = fileInfo.originalFileName
+
+
+                // ✅ НЕ ДОБАВЛЯЕМ КАТЕГОРИЮ ЗДЕСЬ (она уже внутри originalFileName)
+                val finalFileName = originalFileName
                 // ✅ 2. СОХРАНЯЕМ С ОРИГИНАЛЬНЫМ ИМЕНЕМ (расширение сохраняется!)
                 val destFile = File(tempDir, finalFileName)
 
@@ -59,7 +52,7 @@ object ZipHelper {
                 return null
             }
 
-            val zipFile = File(cacheDir, "order_${System.currentTimeMillis()}.zip")
+            val zipFile = File(downloadsDir, "order_${System.currentTimeMillis()}.zip")
             ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFile))).use { zos ->
                 for (file in filesToZip) {
                     val entry = ZipEntry(file.name)
