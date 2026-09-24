@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.CenterFoto" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/md_theme_light_primary</item>
-        <item name="colorPrimaryVariant">@color/md_theme_light_primaryContainer</item>
-        <item name="colorOnPrimary">@color/white</item>
+    <style name="Base.Theme.CenterFoto" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">#E51A2D</item>
+        <item name="colorPrimaryVariant">#F44336</item>
+        <item name="colorOnPrimary">#0036FA</item>
         <!-- Очень важно для статус-бара и навигации -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>          <!-- тёмные иконки → меньше scrim -->
+
         <item name="android:windowLightNavigationBar">true</item>
 
         <!-- Отключаем enforced contrast / scrim на Android 14+ -->

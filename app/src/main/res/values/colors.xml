@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <color name="background">#D81515</color>
     <color name="white">#FFFFFFFF</color>
     <color name="md_theme_light_primary">#000000</color>          <!-- голубой, серый, зелёный — что угодно кроме фиолетового -->
-    <color name="md_theme_light_primaryContainer">#D1E4FF</color>
+    <color name="md_theme_light_primaryContainer">#FFFFFF</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="text_hint">#80FFFFFF</color>
+    <color name="button_checkout">#E8221D</color>
+    <color name="button_checkout_text">#FFFFFF</color>
+
+    <!-- Цены -->
+    <color name="price_color">#E8221D</color>
 </resources>

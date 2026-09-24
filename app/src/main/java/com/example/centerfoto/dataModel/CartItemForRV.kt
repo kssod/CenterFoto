@@ -1,4 +1,4 @@
-package com.example.centerfoto
+package com.example.centerfoto.dataModel
 
 data class CardItem(
     val imageRes: Int,

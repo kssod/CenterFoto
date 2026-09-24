@@ -1,115 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
-
-    android:fitsSystemWindows="false"
+    android:layout_width="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="15dp">
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/drag_handle_background" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="19dp"
+        android:text="Вид бумаги"
+        android:fontFamily="@font/firasansbold"
+        android:layout_marginBottom="9dp"/>
 
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/paperTypeChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:selectionRequired="true"
+        app:singleSelection="true"
+        >
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="Матовая"
+            android:tag="Матовая"
+            android:fontFamily="@font/firasans"
+            android:checkable="true"/>
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="Глянцевая"
+            android:tag="Глянцевая"
+            android:fontFamily="@font/firasans"
+            android:checkable="true"/>
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="Текстурная"
+            android:tag="Текстурная"
+            android:fontFamily="@font/firasans"
+            android:checkable="true"/>
+    </com.google.android.material.chip.ChipGroup>
 
     <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="19dp"
+        android:text="Тип визиток"
+        android:layout_marginBottom="9dp"
+        android:fontFamily="@font/firasansbold"/>
 
-        android:fontFamily="@font/firasans"
-        android:textSize="20sp"
-
-        />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-
-        android:layout_marginBottom="8dp">
-
-        <TextView
-            android:id="@+id/text2"
-            android:layout_width="match_parent"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/sideAttribute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:selectionRequired="true"
+        app:singleSelection="true"
+        >
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="Односторонние"
+            android:tag="Односторонние"
             android:fontFamily="@font/firasans"
-            android:textSize="20sp"
-
-            />
-    </ScrollView>
-
-    <Button
-        android:id="@+id/selectPhotosButton"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:text="Выбрать фото" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@color/white"
-        app:cardCornerRadius="20dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:checkable="true"/>
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:text="Двухсторонние"
+            android:tag="Двухсторонние"
+            android:fontFamily="@font/firasans"
+            android:checkable="true"/>
+    </com.google.android.material.chip.ChipGroup>
 
-            android:background="#8BC34A">
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:helperText="Например: 10, 20, 150"
+        app:helperTextTextColor="#80FF0000"
+        android:layout_marginBottom="16dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/removeButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="–"
-                android:textColor="@color/black"
-                android:visibility="gone"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/bCardsQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Количество визиток, кратное 10"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="@color/text_hint"
+        android:fontFamily="@font/firasans"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        />
+    </com.google.android.material.textfield.TextInputLayout>
 
-                app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Цена за штуку: -"
+        android:fontFamily="@font/firasans"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="8dp"/>
 
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/quantityTextView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="8dp"
-                android:fontFamily="@font/firasans"
-                android:gravity="center"
-                android:text="1"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/addButton"
-                app:layout_constraintStart_toEndOf="@+id/removeButton"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/addButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="8dp"
-                android:text="+"
-
-                android:textColor="@color/black"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-
+    <TextView
+        android:id="@+id/totalPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Итого: -"
+        android:fontFamily="@font/firasansbold"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
 </LinearLayout>
+

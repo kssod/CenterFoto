@@ -3,10 +3,11 @@
     android:shape="rectangle">
 
     <!-- Закругленные углы (овал) -->
-    <corners android:radius="20dp" />
+    <corners android:radius="35dp" />
 
-    <!-- Цвет фона -->
-    <solid android:color="#E2979797" />
+    <stroke
+        android:width="2dp"
+        android:color="#ADFFFFFF" />
 
 
 

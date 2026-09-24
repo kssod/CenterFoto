@@ -1,4 +1,4 @@
-package com.example.centerfoto
+package com.example.centerfoto.activities
 
 import android.graphics.Color
 import android.os.Bundle

@@ -1,163 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scroll"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/branches_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".BranchesActivity">
+    android:orientation="vertical">
 
-
-    <!-- Заголовок -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Филиалы в городе:"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorPrimary"
-        android:paddingBottom="16dp" />
-
-    <!-- Первый филиал -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/first"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-        app:cardCornerRadius="20dp">
+        <ImageView
+            android:id="@+id/branchesActivityEscape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/ic_arrow_left"
 
+            ></ImageView>
 
-    <TextView
-        android:id="@+id/komsomolets"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/firasansbold"
+            android:textSize="23sp"
+            android:text="Филиалы в Темиртау"
+            android:textColor="@color/white"></TextView>
+    </LinearLayout>
+
+    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <!-- Контейнер для добавления карточек -->
+    <LinearLayout
+        android:id="@+id/branchesContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:padding="16dp"
-        android:fontFamily="@font/firasans"
-        android:text="Проспект Республики, 30Б, остановка Комсомолец"
-        android:textSize="16sp"
-        android:lineSpacingExtra="4dp"
-        android:elevation="2dp" />
-    </androidx.cardview.widget.CardView>
-    <!-- Второй филиал -->
+        android:orientation="vertical"
+        android:padding="2dp"/>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:cardCornerRadius="20dp">
-    <TextView
-        android:id="@+id/universal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/firasans"
-        android:padding="16dp"
-        android:text="9 мкр, 3в/г\nмаг. Универсал"
-        android:textSize="16sp"
-        android:lineSpacingExtra="4dp"
-
-        android:elevation="2dp" />
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/universal2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:elevation="2dp"
-        android:fontFamily="@font/firasans"
-        android:lineSpacingExtra="4dp"
-        android:padding="16dp"
-        android:text="9 мкр, 3в/г\nмаг. Универсал"
-
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/universal3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:elevation="2dp"
-        android:fontFamily="@font/firasans"
-        android:lineSpacingExtra="4dp"
-        android:padding="16dp"
-        android:text="9 мкр, 3в/г\nмаг. Универсал"
-
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/universal4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:elevation="2dp"
-        android:fontFamily="@font/firasans"
-        android:lineSpacingExtra="4dp"
-        android:padding="16dp"
-        android:text="9 мкр, 3в/г\nмаг. Универсал"
-
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/universal5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:elevation="2dp"
-        android:fontFamily="@font/firasans"
-        android:lineSpacingExtra="4dp"
-        android:padding="16dp"
-        android:text="9 мкр, 3в/г\nмаг. Универсал"
-
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/universal6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:elevation="2dp"
-        android:fontFamily="@font/firasans"
-        android:lineSpacingExtra="4dp"
-        android:padding="16dp"
-        android:text="9 мкр, 3в/г\nмаг. Универсал"
-
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/universal7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:elevation="2dp"
-        android:fontFamily="@font/firasans"
-        android:lineSpacingExtra="4dp"
-        android:padding="16dp"
-        android:text="9 мкр, 3в/г\nмаг. Универсал"
-
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/universal8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:elevation="2dp"
-        android:fontFamily="@font/firasans"
-        android:lineSpacingExtra="4dp"
-        android:padding="16dp"
-        android:text="9 мкр, 3в/г\nмаг. Универсал"
-
-        android:textSize="16sp" />
-</LinearLayout>
 </ScrollView>
+</LinearLayout>
