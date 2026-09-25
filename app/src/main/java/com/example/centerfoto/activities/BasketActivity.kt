@@ -52,33 +52,33 @@ class BasketActivity : AppCompatActivity() {
         checkoutButton.setOnClickListener {
             val cartList = cartViewModel._cartItems.value ?: emptyList()
 
-            // 1. Проверяем, пуста ли корзина
+
             if (cartList.isEmpty()) {
                 Toast.makeText(this, "Корзина пуста", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // 2. Проверяем, есть ли файлы с uri
+
             val hasValidFiles = cartList.any { it.fileUri != null }
             if (!hasValidFiles) {
                 Toast.makeText(this, "Нет файлов для отправки", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // 3. Показываем диалог загрузки
+
             val progressDialog = ProgressDialog(this).apply {
                 setMessage("Подготавливаем файлы...")
                 setCancelable(false)
                 show()
             }
 
-            // 4. Создаём архив в фоновом потоке
+            // создание архива в фоновом потоке
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
-                    // Получаем папку для сохранения
+
                     val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
-                    //  Создаём архив из CartItem
+
                     val zipPath = ZipHelper.createZip(
                         contentResolver = contentResolver,
                         cartItems = cartList,  // ← передаём список CartItem
@@ -89,7 +89,7 @@ class BasketActivity : AppCompatActivity() {
                         progressDialog.dismiss()
 
                         if (zipPath != null) {
-                            // Архив создан — отправляем
+                            // Архив создан - отправка
                             sendToWhatsApp(zipPath)
                         } else {
                             Toast.makeText(
@@ -121,7 +121,7 @@ class BasketActivity : AppCompatActivity() {
             return
         }
 
-        // ✅ Определяем MIME-тип по расширению
+        // определенгие MIME-тип по расширению
         val mimeType = getMimeType(cartItem.originalFileName)
 
         try {
@@ -135,7 +135,7 @@ class BasketActivity : AppCompatActivity() {
         }
     }
 
-    // ✅ Определяет MIME-тип по расширению
+
     private fun getMimeType(fileName: String): String {
         return when {
             fileName.endsWith(".pdf", true) -> "application/pdf"
@@ -153,23 +153,23 @@ class BasketActivity : AppCompatActivity() {
     }
     private fun sendToWhatsApp(filePath: String) {
         try {
-            // 1. Создаем объект файла по пути
+            // объект файла по пути
             val file = File(filePath)
 
-            // 2. Проверяем, существует ли файл
+            //  существует ли файл
             if (!file.exists()) {
                 Toast.makeText(this, "Файл не найден", Toast.LENGTH_SHORT).show()
                 return
             }
 
-            // 3. Получаем URI через FileProvider (для Android 7+)
+            //  URI через FileProvider
             val fileUri = FileProvider.getUriForFile(
                 this,
                 "${applicationContext.packageName}.fileprovider",
                 file
             )
 
-            // 4. Создаем Intent для отправки
+            // intent для отправки
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "application/zip"                          // тип файла
                 putExtra(Intent.EXTRA_STREAM, fileUri)           // прикрепляем файл
@@ -178,8 +178,8 @@ class BasketActivity : AppCompatActivity() {
                 setPackage("com.whatsapp")
             }
             if (intent.resolveActivity(packageManager) != null) {
-                // ✅ Запускаем напрямую, БЕЗ createChooser
-                // createChooser показывает диалог выбора — он нам не нужен
+
+
                 startActivity(intent)
             } else {
                 // Если WhatsApp не установлен — показываем сообщение
@@ -214,7 +214,7 @@ class BasketActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        // Наблюдаем за списком товаров
+        // "слушаем" изменения
         cartViewModel._cartItems.observe(this) { cartList ->
             adapter.updateItems(cartList)
 

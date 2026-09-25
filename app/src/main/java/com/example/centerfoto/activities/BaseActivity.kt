@@ -25,12 +25,12 @@ abstract class BaseActivity : AppCompatActivity() {
 
             v.setPadding(
                 systemBars.left,
-                systemBars.top,           // ← вот это отодвинет всё вниз от статус-бара
+                systemBars.top,
                 systemBars.right,
                 systemBars.bottom
             )
 
-            // Важно: возвращаем insets дальше (особенно если есть вложенные scrollview/recyclerview)
+            // возвращаем insets дальше
             insets
         }
     }

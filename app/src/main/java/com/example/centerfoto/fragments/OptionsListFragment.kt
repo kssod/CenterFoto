@@ -80,7 +80,7 @@ class OptionsListFragment: BottomSheetDialogFragment() {
        if (uris?.isNotEmpty() == true) {
 
 
-           // ✅ Достаём Set<String> и превращаем обратно в List<Uri>
+           //  Set<String> превращаем в List<Uri>
            val newUriStrings = cartViewModel.addUris(uris)
 
            val uniqueUris = newUriStrings.map { Uri.parse(it) }
@@ -143,7 +143,7 @@ class OptionsListFragment: BottomSheetDialogFragment() {
                 behavior.skipCollapsed = true
                 val scrollView = view.findViewById<ScrollView>(R.id.scrollView)
                 scrollView?.viewTreeObserver?.addOnScrollChangedListener {
-                    // Если ScrollView не в самом верху (прокручен вниз) — запрещаем свайп
+
                     behavior.isDraggable = scrollView.scrollY == 0
                 }
             }
@@ -166,7 +166,7 @@ class OptionsListFragment: BottomSheetDialogFragment() {
         Log.d(TAG, "displayOptions вызван, options.size = ${options.size}")
 
         for (option in options) {
-            // ✅ 2. Используем context вместо requireContext()
+
             val card = LayoutInflater.from(context)
                 .inflate(R.layout.option_item_card, optionsContainer, false)
 
@@ -202,19 +202,18 @@ class OptionsListFragment: BottomSheetDialogFragment() {
     }
     private fun loadOptionsFromFirestore(serviceId: Int, imageRes: Int) {
 
-        firestore.collection("1")  // ← коллекция называется "1"
-            .whereEqualTo("serviceId", serviceId)   // ← фильтруем по serviceId
+        firestore.collection("1")  // коллекция  "1" в firebase cloud firestore
+            .whereEqualTo("serviceId", serviceId)   // фильтрация по serviceId для корректного отображения содержимого фрагмента
             .get()
             .addOnSuccessListener { snapshot ->
 
-                // ✅ snapshot — это список документов (QuerySnapshot)
-                // ✅ Проходим по каждому документу в коллекции
+                // snapshot —  список документов (QuerySnapshot)
+
                 for (document in snapshot) {
-                    // ✅ document.data — данные КАЖДОГО документа
                     Log.d(TAG, "Документ: ${document.id} => ${document.data}")
                 }
 
-                // ✅ Преобразуем список документов в список ProductOption
+                // Преобразовение список документов в список ProductOption
                 val options = snapshot.map { document ->
                     document.toObject(ProductOption::class.java)
                 }

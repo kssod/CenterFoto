@@ -113,15 +113,16 @@ class BasketAdapter(
             decreaseButton.setOnClickListener {
                 onQuantityChange(cartItem, -1)
             }
-            // ✅ 1. Удаляем СТАРЫЙ слушатель (если есть)
+            // работа с рецайклером при вводе в edittext и потере фокуса
+            //  Удаляем старый слушатель
             textWatcher?.let { pagesRange.removeTextChangedListener(it) }
 
-            // ✅ 2. Устанавливаем текст ИЗ ТЕКУЩЕГО объекта
+            // Устанавливаем текст из текущего объекта
             if (pagesRange.text.toString() != cartItem.pageRange) {
                 pagesRange.setText(cartItem.pageRange)
             }
 
-            // ✅ 3. Создаём НОВЫЙ слушатель для ТЕКУЩЕГО объекта
+            // Создаём новый слушатель для текущего объекта
             textWatcher = object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -130,7 +131,7 @@ class BasketAdapter(
                 }
             }
 
-            // ✅ 4. Добавляем новый слушатель
+            //Добавляем новый слушатель
             pagesRange.addTextChangedListener(textWatcher)
             exploreButton.setOnClickListener {
                 onFileClick(cartItem)

@@ -45,15 +45,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         recyclerView = findViewById(R.id.recyclerServices)
+
+        //анимация кнопки "корзина"
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (dy > 0) {
-                    // dy > 0 → скроллим ВНИЗ → прячем кнопку
+
                     hideBasketButton(basketButton)
                 } else if (dy < 0) {
-                    // dy < 0 → скроллим ВВЕРХ → показываем кнопку
+
                     showBasketButton(basketButton)
                 }
             }
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         updateBranchButton()
 
-        // Переход в BranchesActivity
+
         branchesButton.setOnClickListener {
             startActivityForResult(Intent(this, BranchesActivity::class.java), REQUEST_CODE_BRANCH)
         }
@@ -117,7 +119,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        // Обновляем кнопку при возвращении из BranchesActivity
+
         updateBranchButton()
     }
 
@@ -146,8 +148,8 @@ class MainActivity : AppCompatActivity() {
     private fun hideBasketButton(button: View) {
         if (button.visibility == View.VISIBLE) {
             button.animate()
-                .translationY(button.height + 32f) // сдвигаем вниз за экран
-                .alpha(0f)                          // и делаем прозрачной
+                .translationY(button.height + 32f)
+                .alpha(0f)
                 .setDuration(250)
                 .withEndAction { button.visibility = View.GONE }
                 .start()
@@ -157,11 +159,11 @@ class MainActivity : AppCompatActivity() {
     private fun showBasketButton(button: View) {
         if (button.visibility != View.VISIBLE) {
             button.visibility = View.VISIBLE
-            button.translationY = button.height + 10f // стартуем снизу
+            button.translationY = button.height + 10f
             button.alpha = 0f
             button.animate()
-                .translationY(0f)   // возвращаем на место
-                .alpha(1f)          // проявляем
+                .translationY(0f)
+                .alpha(1f)
                 .setDuration(250)
                 .start()
         }

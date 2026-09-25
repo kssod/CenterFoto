@@ -33,7 +33,7 @@
     android:layout_height="match_parent"
     android:padding="8dp">
 
-    <!-- Контейнер для добавления карточек -->
+
     <LinearLayout
         android:id="@+id/branchesContainer"
         android:layout_width="match_parent"

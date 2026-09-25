@@ -28,8 +28,9 @@ class ServiceAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_view_main_screen, parent, false)
-            return ViewHolder(view)
+        return ViewHolder(view)
     }
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: CardItem = items[position]

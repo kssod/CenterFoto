@@ -9,7 +9,7 @@ class MyApp : Application() {
     }
     override fun onCreate() {
         super.onCreate()
-        // ✅ Инициализация Firebase
+        //  Инициализация Firebase
         FirebaseApp.initializeApp(this)
     }
 }
